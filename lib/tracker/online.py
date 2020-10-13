@@ -42,7 +42,7 @@ class ONLINE(object):
 
 
     # def initialize(self, image, info: dict) -> dict:
-    def init(self, bgr_image, image, siam_net, target_pos, target_sz, load_online, dataname='VOT2019', resume=None):
+    def init(self, bgr_image, image, siam_net, target_pos, target_sz, load_online, dataname='VOT2019', resume=None, yaml_path=None):
         # Initialize some stuff
         self.frame_num = 1
         self.load_online = load_online
@@ -52,8 +52,11 @@ class ONLINE(object):
         # print('====> init phase: load default parameters')
         self.p = ONLINEConfig()
         absPath = os.path.abspath(os.path.dirname(__file__))
-        yname='ONLINE.yaml' if 'VOT' in dataname else 'ONLINE_NV.yaml'
-        yamlPath = os.path.join(absPath, '../../experiments/test/VOT/', yname)
+        if yaml_path:
+            yamlPath = yaml_path
+        else:
+            yname='ONLINE.yaml' if 'VOT' in dataname else 'ONLINE_NV.yaml'
+            yamlPath = os.path.join(absPath, '../../experiments/test/VOT/', yname)
         cfg = load_yaml(yamlPath, subset=False)
         self.p.update(cfg)
         self.params_convert()
